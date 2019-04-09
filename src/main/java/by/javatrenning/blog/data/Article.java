@@ -2,6 +2,7 @@ package by.javatrenning.blog.data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "artcl")
@@ -20,6 +21,13 @@ public class Article {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "article_tag",
+            joinColumns = { @JoinColumn(name = "id") },
+            inverseJoinColumns = { @JoinColumn(name = "tagId") }
+    )
+    Set<Tag> tags;
 
     public Article() {
     }
@@ -59,6 +67,10 @@ public class Article {
         return updatedAt;
     }
 
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -90,5 +102,9 @@ public class Article {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }
